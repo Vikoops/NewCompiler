@@ -11,7 +11,7 @@
 ```
 
 ## Диаграмма состояний сканера
-![](https://github.com/Vikoops/Compiler/blob/master/Диаграмма_ТФЯиК.drawio.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/Диаграмма_тфяик.drawio.png)
 
 
 # Справка
