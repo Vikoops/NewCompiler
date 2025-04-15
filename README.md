@@ -17,20 +17,20 @@
 ![](https://github.com/Vikoops/NewCompiler/blob/master/Диаграмма.drawio.png)
 
 ## Грамматика
-1. `‹START›` → `'final'``‹SPACE1›`
-2. `‹SPACE1›` → `' '``‹TYPE›`
-3. `‹TYPE›` → `'String'``‹SPACE2›`
-4. `‹SPACE2›` → `' '``‹ID›`
-5. `‹ID›` → `‹LETTER›``‹IDREM›`
-6. `‹IDREM›` → `‹LETTER›``‹IDREM›`
-7. `‹IDREM›` → `‹DIGIT›``‹IDREM›`
-8. `‹IDREM›` → `' '``‹EQUAL›`
-9. `‹EQUAL›` → `'='``‹SPACE3›`
-10. `‹SPACE3›` → `' '``‹QUOTE›`
-11. `‹QUOTE›` → `'"'``‹STRING›`
-12. `‹STRING›` → `‹SYMBOL›``‹STRINGREM›`
-13. `‹STRINGREM›` → `‹SYMBOL›``‹STRINGREM›`
-14. `‹STRINGREM›` → `'"'``‹END›`
+1. `‹START›` → `'final'‹SPACE1›`
+2. `‹SPACE1›` → `' '‹TYPE›`
+3. `‹TYPE›` → `'String'‹SPACE2›`
+4. `‹SPACE2›` → `' '‹ID›`
+5. `‹ID›` → `‹LETTER›‹IDREM›`
+6. `‹IDREM›` → `‹LETTER›‹IDREM›`
+7. `‹IDREM›` → `‹DIGIT›‹IDREM›`
+8. `‹IDREM›` → `' '‹EQUAL›`
+9. `‹EQUAL›` → `'='‹SPACE3›`
+10. `‹SPACE3›` → `' '‹QUOTE›`
+11. `‹QUOTE›` → `'"'‹STRING›`
+12. `‹STRING›` → `‹SYMBOL›‹STRINGREM›`
+13. `‹STRINGREM›` → `‹SYMBOL›‹STRINGREM›`
+14. `‹STRINGREM›` → `'"'‹END›`
 15. `‹END›` → `';'`
 
 -`‹LETTER›` → `"a"|"b"|...|"z"|"A"|"B"|...|"Z"`
