@@ -24,14 +24,12 @@
 5. `‹ID›` → `‹LETTER›‹IDREM›`
 6. `‹IDREM›` → `‹LETTER›‹IDREM›`
 7. `‹IDREM›` → `‹DIGIT›‹IDREM›`
-8. `‹IDREM›` → `' '‹EQUAL›`
-9. `‹EQUAL›` → `'='‹SPACE3›`
-10. `‹SPACE3›` → `' '‹QUOTE›`
-11. `‹QUOTE›` → `'"'‹STRING›`
-12. `‹STRING›` → `‹SYMBOL›‹STRINGREM›`
-13. `‹STRINGREM›` → `‹SYMBOL›‹STRINGREM›`
-14. `‹STRINGREM›` → `'"'‹END›`
-15. `‹END›` → `';'`
+8. `‹EQUAL›` → `'='‹SPACE3›`
+9. `‹QUOTE›` → `'"'‹STRING›`
+10. `‹STRING›` → `‹SYMBOL›‹STRINGREM›`
+11. `‹STRINGREM›` → `‹SYMBOL›‹STRINGREM›`
+12. `‹STRINGREM›` → `'"'‹END›`
+13. `‹END›` → `';'`
 
 -`‹LETTER›` → `"a"|"b"|...|"z"|"A"|"B"|...|"Z"`
 
