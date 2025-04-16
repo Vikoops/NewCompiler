@@ -24,7 +24,7 @@
 5. `‹ID›` → `‹LETTER›‹IDREM›`
 6. `‹IDREM›` → `‹LETTER›‹IDREM›`
 7. `‹IDREM›` → `‹DIGIT›‹IDREM›`
-8. `‹EQUAL›` → `'='‹SPACE3›`
+8. `‹IDREM›` → `'='‹QUOTE›`
 9. `‹QUOTE›` → `'"'‹STRING›`
 10. `‹STRING›` → `‹SYMBOL›‹STRINGREM›`
 11. `‹STRINGREM›` → `‹SYMBOL›‹STRINGREM›`
@@ -40,7 +40,7 @@
 Следуя введенному формальному определению грамматики, представим G[‹START›] ее составляющими:
 - **Z** = ‹START›;
 - **VT** = {a, b, c, ..., z, A, B, C, ..., Z, !, ., ,, ?, №, #, ^, @, $, ;, : , %, &, *, (, ), -, _, =, +, /, \, |, <, >, ~, [, ], {, }, ‘, 0, 1, 2, ..., 9, const, char};
-- **VN** = {‹START›, ‹SPACE1›, ‹TYPE›, ‹SPACE2›, ‹ID›, ‹IDREM›, ‹EQUAL›, ‹SPACE3›, ‹QUOTE›, ‹STRING›, ‹STRINGREM›, ‹END›}
+- **VN** = {‹START›, ‹SPACE1›, ‹TYPE›, ‹SPACE2›, ‹ID›, ‹IDREM›, ‹QUOTE›, ‹STRING›, ‹STRINGREM›, ‹END›}
 
 ## Тестовые примеры
 ![](https://github.com/Vikoops/NewCompiler/blob/master/Тестовый_пример_1.png)
