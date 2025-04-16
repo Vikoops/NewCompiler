@@ -16,6 +16,9 @@
 ## Диаграмма состояний сканера
 ![](https://github.com/Vikoops/NewCompiler/blob/master/Диаграмма.drawio.png)
 
+## Граф
+![](https://github.com/Vikoops/NewCompiler/blob/master/граф.drawio.png)
+
 ## Грамматика
 1. `‹START›` → `'final'‹SPACE1›`
 2. `‹SPACE1›` → `' '‹TYPE›`
