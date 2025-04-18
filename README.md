@@ -17,7 +17,7 @@
 ![](https://github.com/Vikoops/NewCompiler/blob/master/Диаграмма.drawio.png)
 
 ## Граф
-![](https://github.com/Vikoops/NewCompiler/blob/master/граф.drawio.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/Граф.drawio%20.png)
 
 ## Грамматика
 1. `‹START›` → `'final'‹SPACE1›`
