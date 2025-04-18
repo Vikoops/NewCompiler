@@ -53,63 +53,93 @@ namespace NewCompiler
             while (position < inputText.Length)
             {
                 char currentChar = inputText[position];
+                string lexemePosition = $"Строка {lineNumber}, позиция {position + 1}-{position + 1}"; // Строка и позиция для символа
 
                 switch (state)
                 {
                     case 0: // Начальное состояние
                         if (char.IsLetter(currentChar))
                         {
-                            state = 1; // Идентификатор или ключевое слово
-                            currentLexeme += currentChar;
+                            // Проверка на русские буквы
+                            if ((currentChar >= 'А' && currentChar <= 'я') || currentChar == 'Ё' || currentChar == 'ё')
+                            {
+                                AddLexeme(8, "ERROR", currentChar.ToString(), lineNumber, position, 1);
+                                Errors.Add($"Ошибка: Недопустимый символ (русская буква) '{currentChar}' в строке {lineNumber}, позиция {position + 1}");
+                            }
+                            else
+                            {
+                                state = 1; // Идентификатор или ключевое слово
+                                currentLexeme += currentChar;
+                            }
+                            position++;
                         }
                         else if (char.IsWhiteSpace(currentChar))
                         {
-                            if (currentChar == '\n')
-                            {
-                                lineNumber++;
-                                currentLineStartPos = position + 1;
-                            }
-                            AddLexeme(4, "разделитель", "пробел", lineNumber, position - currentLineStartPos);
+                            // Если пробел
+                            AddLexeme(4, "разделитель", "пробел", lineNumber, position, 1);
+                            position++;
                         }
                         else if (currentChar == '=')
                         {
-                            AddLexeme(5, "оператор присваивания", "=", lineNumber, position - currentLineStartPos);
+                            AddLexeme(5, "оператор присваивания", "=", lineNumber, position, 1);
+                            position++;
                         }
                         else if (currentChar == '"')
                         {
                             state = 2; // Начало строки
                             currentLexeme = "\"";
+                            position++;
                         }
                         else if (currentChar == ';')
                         {
-                            AddLexeme(7, "конец оператора", ";", lineNumber, position - currentLineStartPos);
+                            AddLexeme(7, "конец оператора", ";", lineNumber, position, 1);
+                            position++;
                         }
                         else if (!char.IsControl(currentChar))
                         {
-                            AddLexeme(8, "ERROR", currentChar.ToString(), lineNumber, position - currentLineStartPos);
-                            Errors.Add($"Ошибка: Недопустимый символ '{currentChar}' в строке {lineNumber}, позиция {position - currentLineStartPos + 1}");
+                            AddLexeme(8, "ERROR", currentChar.ToString(), lineNumber, position, 1);
+                            Errors.Add($"Ошибка: Недопустимый символ '{currentChar}' в строке {lineNumber}, позиция {position + 1}");
+                            position++;
                         }
-                        position++;
+                        else
+                        {
+                            position++;
+                        }
                         break;
 
                     case 1: // Идентификатор или ключевое слово
                         if (char.IsLetterOrDigit(currentChar) || currentChar == '_')
                         {
-                            currentLexeme += currentChar;
+                            // Проверка на недопустимый символ в середине идентификатора
+                            if ((currentChar >= 'А' && currentChar <= 'я') || currentChar == 'Ё' || currentChar == 'ё')
+                            {
+                                AddLexeme(KeyWords.ContainsKey(currentLexeme) ? KeyWords[currentLexeme] : 3,
+                                          KeyWords.ContainsKey(currentLexeme) ? "ключевое слово" : "идентификатор",
+                                          currentLexeme,
+                                          lineNumber,
+                                          position - currentLexeme.Length,
+                                          currentLexeme.Length);
+                                Errors.Add($"Ошибка: Недопустимый символ (русская буква) '{currentChar}' после идентификатора в строке {lineNumber}, позиция {position + 1}");
+                                AddLexeme(8, "ERROR", currentChar.ToString(), lineNumber, position, 1);
+                                currentLexeme = "";
+                                state = 0;
+                            }
+                            else
+                            {
+                                currentLexeme += currentChar;
+                            }
                             position++;
                         }
                         else
                         {
-                            if (KeyWords.ContainsKey(currentLexeme))
-                            {
-                                AddLexeme(KeyWords[currentLexeme], "ключевое слово", currentLexeme, lineNumber, position - currentLexeme.Length - currentLineStartPos);
-                            }
-                            else
-                            {
-                                AddLexeme(3, "идентификатор", currentLexeme, lineNumber, position - currentLexeme.Length - currentLineStartPos);
-                            }
+                            AddLexeme(KeyWords.ContainsKey(currentLexeme) ? KeyWords[currentLexeme] : 3,
+                                      KeyWords.ContainsKey(currentLexeme) ? "ключевое слово" : "идентификатор",
+                                      currentLexeme,
+                                      lineNumber,
+                                      position - currentLexeme.Length,
+                                      currentLexeme.Length);
                             currentLexeme = "";
-                            state = 0;
+                            state = 0; // Возврат в начальное состояние
                         }
                         break;
 
@@ -119,7 +149,7 @@ namespace NewCompiler
 
                         if (currentChar == '"')
                         {
-                            AddLexeme(6, "строка", currentLexeme, lineNumber, position - currentLexeme.Length - currentLineStartPos);
+                            AddLexeme(6, "строка", currentLexeme, lineNumber, position - currentLexeme.Length, currentLexeme.Length);
                             currentLexeme = "";
                             state = 0;
                         }
@@ -135,33 +165,32 @@ namespace NewCompiler
             }
 
             // Обработка незавершенных лексем
-            if (state == 1) // Незавершенный идентификатор
+            if (state == 1)
             {
-                if (KeyWords.ContainsKey(currentLexeme))
-                {
-                    AddLexeme(KeyWords[currentLexeme], "ключевое слово", currentLexeme, lineNumber, position - currentLexeme.Length - currentLineStartPos);
-                }
-                else
-                {
-                    AddLexeme(3, "идентификатор", currentLexeme, lineNumber, position - currentLexeme.Length - currentLineStartPos);
-                }
+                AddLexeme(KeyWords.ContainsKey(currentLexeme) ? KeyWords[currentLexeme] : 3,
+                          KeyWords.ContainsKey(currentLexeme) ? "ключевое слово" : "идентификатор",
+                          currentLexeme,
+                          lineNumber,
+                          position - currentLexeme.Length,
+                          currentLexeme.Length);
             }
-            else if (state == 2) // Незавершенная строка
+            else if (state == 2)
             {
                 Errors.Add($"Ошибка: Незавершенная строка в строке {lineNumber}");
-                AddLexeme(6, "строка (незавершенная)", currentLexeme, lineNumber, position - currentLexeme.Length - currentLineStartPos);
+                AddLexeme(6, "строка (незавершенная)", currentLexeme, lineNumber, position - currentLexeme.Length, currentLexeme.Length);
             }
 
             UpdateOutput(outputGrid);
         }
 
-        private void AddLexeme(int code, string type, string value, int line, int position)
+        private void AddLexeme(int code, string type, string value, int line, int startPosition, int length)
         {
+            string lexemePosition = $"Строка {line}, позиция {startPosition + 1}-{startPosition + length}";
             ResultTable.Rows.Add(
                 code,
                 type,
                 value,
-                $"Строка {line}, позиция {position + 1}-{position + value.Length}"
+                lexemePosition
             );
         }
 
