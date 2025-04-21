@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NewCompiler
@@ -17,35 +10,70 @@ namespace NewCompiler
             InitializeComponent();
             InitializeInfoContent();
         }
+
         private void InitializeInfoContent()
         {
-            RichTextBox infoBox = new RichTextBox
+            // Создаем и настраиваем WebBrowser
+            WebBrowser webBrowser = new WebBrowser
             {
                 Dock = DockStyle.Fill,
-                ReadOnly = true,
-                BackColor = SystemColors.Window
+                IsWebBrowserContextMenuEnabled = false, // Отключаем контекстное меню
+                ScrollBarsEnabled = true              // Включаем скроллбар
             };
 
+            // Генерируем HTML-контент
+            string htmlContent = @"
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial;
+                        padding: 15px;
+                        color: #333;
+                        line-height: 1.6;
+                    }
+                    h1 {
+                        color: #2c3e50;
+                        border-bottom: 1px solid #3498db;
+                        padding-bottom: 5px;
+                    }
+                    h2 {
+                        color: #2980b9;
+                        margin-top: 20px;
+                    }
+                    .version {
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                    }
+                    .description {
+                        margin-top: 10px;
+                        text-align: justify;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Программа</h1>
+                <div class='version'>Версия: 1.0</div>
+                <div>Разработчик: Зачиняева В.К.</div>
 
-            infoBox.SelectionFont = new Font("Arial", 12, FontStyle.Bold);
-            infoBox.AppendText("Программа:\n");
-            infoBox.SelectionFont = new Font("Arial", 11, FontStyle.Regular);
-            infoBox.AppendText("Версия: 1.0\n");
-            infoBox.SelectionFont = new Font("Arial", 11, FontStyle.Regular);
-            infoBox.AppendText("Разработчик: Зачиняева В.К.\n\n");
+                <h2>Описание</h2>
+                <div class='description'>
+                    Данное приложение предназначено для работы с текстовыми файлами. Оно включает в себя функции создания, 
+                    редактирования, сохранения и открытия файлов. Также доступны функции отмены, повтора действий, 
+                    работы с буфером обмена и вызова справочной информации.
+                </div>
+            </body>
+            </html>";
 
-            infoBox.SelectionFont = new Font("Arial", 12, FontStyle.Bold);
-            infoBox.AppendText("Описание:\n");
-
-            infoBox.SelectionFont = new Font("Arial", 11, FontStyle.Regular);
-            infoBox.AppendText("Данное приложение предназначено для работы с текстовыми файлами. Оно включает в себя функции создания, редактирования, сохранения и открытия файлов. Также доступны функции отмены, повтора действий, работы с буфером обмена и вызова справочной информации.\n\n");
-
-            this.Controls.Add(infoBox);
+            // Загружаем HTML
+            webBrowser.DocumentText = htmlContent;
+            this.Controls.Add(webBrowser);
         }
 
         private void InfoForm_Load(object sender, EventArgs e)
         {
-
+            // Дополнительные действия при загрузке формы
         }
     }
 }

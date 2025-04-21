@@ -53,14 +53,13 @@ namespace NewCompiler
             while (position < inputText.Length)
             {
                 char currentChar = inputText[position];
-                string lexemePosition = $"Строка {lineNumber}, позиция {position + 1}-{position + 1}"; // Строка и позиция для символа
+                string lexemePosition = $"Строка {lineNumber}, позиция {position + 1}-{position + 1}";
 
                 switch (state)
                 {
                     case 0: // Начальное состояние
                         if (char.IsLetter(currentChar))
                         {
-                            // Проверка на русские буквы
                             if ((currentChar >= 'А' && currentChar <= 'я') || currentChar == 'Ё' || currentChar == 'ё')
                             {
                                 AddLexeme(8, "ERROR", currentChar.ToString(), lineNumber, position, 1);
@@ -68,14 +67,13 @@ namespace NewCompiler
                             }
                             else
                             {
-                                state = 1; // Идентификатор или ключевое слово
+                                state = 1;
                                 currentLexeme += currentChar;
                             }
                             position++;
                         }
                         else if (char.IsWhiteSpace(currentChar))
                         {
-                            // Если пробел
                             AddLexeme(4, "разделитель", "пробел", lineNumber, position, 1);
                             position++;
                         }
@@ -86,7 +84,7 @@ namespace NewCompiler
                         }
                         else if (currentChar == '"')
                         {
-                            state = 2; // Начало строки
+                            state = 2;
                             currentLexeme = "\"";
                             position++;
                         }
@@ -110,7 +108,6 @@ namespace NewCompiler
                     case 1: // Идентификатор или ключевое слово
                         if (char.IsLetterOrDigit(currentChar) || currentChar == '_')
                         {
-                            // Проверка на недопустимый символ в середине идентификатора
                             if ((currentChar >= 'А' && currentChar <= 'я') || currentChar == 'Ё' || currentChar == 'ё')
                             {
                                 AddLexeme(KeyWords.ContainsKey(currentLexeme) ? KeyWords[currentLexeme] : 3,
@@ -139,7 +136,7 @@ namespace NewCompiler
                                       position - currentLexeme.Length,
                                       currentLexeme.Length);
                             currentLexeme = "";
-                            state = 0; // Возврат в начальное состояние
+                            state = 0;
                         }
                         break;
 
@@ -202,10 +199,10 @@ namespace NewCompiler
             outputGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             outputGrid.DefaultCellStyle.Font = new System.Drawing.Font("Consolas", 10);
 
-            // Вывод ошибок
+            // Вывод только первой ошибки в MessageBox
             if (Errors.Count > 0)
             {
-                MessageBox.Show(string.Join("\n", Errors), "Ошибки анализа",
+                MessageBox.Show(Errors[0], "Ошибка анализа",
                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }

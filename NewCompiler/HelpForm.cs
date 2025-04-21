@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NewCompiler
@@ -20,52 +13,80 @@ namespace NewCompiler
 
         private void InitializeHelpContent()
         {
-            RichTextBox helpBox = new RichTextBox
+            WebBrowser webBrowser = new WebBrowser
             {
                 Dock = DockStyle.Fill,
-                ReadOnly = true,
-                BackColor = SystemColors.Window
+                IsWebBrowserContextMenuEnabled = false,
+                ScrollBarsEnabled = true
             };
 
-            helpBox.SelectionFont = new Font("Arial", 14, FontStyle.Regular);
-            helpBox.AppendText("Файл:\n");
-            helpBox.SelectionBullet = true;
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Создать - создание нового файла.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Открыть - открытие существующего файла в формате .txt.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Сохранить - сохранение текущего файла.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Сохранить как - сохранение файла под новым именем.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Выход - выйти из программы.\n");
-            helpBox.SelectionBullet = false;
+            string htmlContent = @"
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body {
+                        font-family: 'Segoe UI', Arial, sans-serif;
+                        padding: 20px;
+                        color: #333;
+                        line-height: 1.6;
+                    }
+                    h1 {
+                        color: #2c3e50;
+                        font-size: 18px;
+                        margin-bottom: 10px;
+                    }
+                    h2 {
+                        color: #2980b9;
+                        font-size: 16px;
+                        margin: 20px 0 10px 0;
+                        border-bottom: 1px solid #eee;
+                        padding-bottom: 5px;
+                    }
+                    ul {
+                        margin: 5px 0;
+                        padding-left: 25px;
+                    }
+                    li {
+                        margin-bottom: 8px;
+                    }
+                    .command {
+                        font-weight: bold;
+                        color: #e74c3c;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Руководство пользователя</h1>
+                
+                <h2>Файл</h2>
+                <ul>
+                    <li><span class='command'>Создать</span> - создание нового файла</li>
+                    <li><span class='command'>Открыть</span> - открытие существующего файла в формате .txt</li>
+                    <li><span class='command'>Сохранить</span> - сохранение текущего файла</li>
+                    <li><span class='command'>Сохранить как</span> - сохранение файла под новым именем</li>
+                    <li><span class='command'>Выход</span> - выход из программы</li>
+                </ul>
 
-            helpBox.SelectionFont = new Font("Arial", 14, FontStyle.Regular);
-            helpBox.AppendText("\nПравка:\n");
-            helpBox.SelectionBullet = true;
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Отменить/Повторить - отмена последнего/повтор отменненого действия.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Вырезать - выделенный текст вырезается и копируется в буфер обмена.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Копировать - выделенный текст копируется в буфер обмена.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Вставить - текст из буфера обмена вставляется в окно редактирования.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Удалить - удаление выделенного текста.\n");
-            helpBox.SelectionFont = new Font("Arial", 12, FontStyle.Regular);
-            helpBox.AppendText("Выделить все - выделяется весь текст из окна редактирования.\n");
+                <h2>Правка</h2>
+                <ul>
+                    <li><span class='command'>Отменить/Повторить</span> - отмена последнего/повтор отмененного действия</li>
+                    <li><span class='command'>Вырезать</span> - выделенный текст вырезается и копируется в буфер обмена</li>
+                    <li><span class='command'>Копировать</span> - выделенный текст копируется в буфер обмена</li>
+                    <li><span class='command'>Вставить</span> - текст из буфера обмена вставляется в окно редактирования</li>
+                    <li><span class='command'>Удалить</span> - удаление выделенного текста</li>
+                    <li><span class='command'>Выделить все</span> - выделение всего текста в окне редактирования</li>
+                </ul>
+            </body>
+            </html>";
 
-            helpBox.SelectionBullet = false;
-
-            this.Controls.Add(helpBox);
+            webBrowser.DocumentText = htmlContent;
+            this.Controls.Add(webBrowser);
         }
 
         private void HelpForm_Load(object sender, EventArgs e)
         {
-
+            // Дополнительные действия при загрузке
         }
     }
 }
