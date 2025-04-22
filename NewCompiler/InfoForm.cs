@@ -13,15 +13,13 @@ namespace NewCompiler
 
         private void InitializeInfoContent()
         {
-            // Создаем и настраиваем WebBrowser
             WebBrowser webBrowser = new WebBrowser
             {
                 Dock = DockStyle.Fill,
-                IsWebBrowserContextMenuEnabled = false, // Отключаем контекстное меню
-                ScrollBarsEnabled = true              // Включаем скроллбар
+                IsWebBrowserContextMenuEnabled = false,
+                ScrollBarsEnabled = true
             };
 
-            // Генерируем HTML-контент
             string htmlContent = @"
             <!DOCTYPE html>
             <html>
@@ -41,6 +39,12 @@ namespace NewCompiler
                     h2 {
                         color: #2980b9;
                         margin-top: 20px;
+                        border-bottom: 1px solid #eee;
+                        padding-bottom: 3px;
+                    }
+                    h3 {
+                        color: #16a085;
+                        margin: 15px 0 5px 0;
                     }
                     .version {
                         font-weight: bold;
@@ -49,6 +53,18 @@ namespace NewCompiler
                     .description {
                         margin-top: 10px;
                         text-align: justify;
+                    }
+                    .feature-list {
+                        margin-left: 20px;
+                    }
+                    .feature-list li {
+                        margin-bottom: 8px;
+                    }
+                    .code {
+                        font-family: Consolas, monospace;
+                        background: #f5f5f5;
+                        padding: 2px 5px;
+                        border-radius: 3px;
                     }
                 </style>
             </head>
@@ -59,21 +75,54 @@ namespace NewCompiler
 
                 <h2>Описание</h2>
                 <div class='description'>
-                    Данное приложение предназначено для работы с текстовыми файлами. Оно включает в себя функции создания, 
-                    редактирования, сохранения и открытия файлов. Также доступны функции отмены, повтора действий, 
-                    работы с буфером обмена и вызова справочной информации.
+                    Данное приложение предназначено для работы с текстовыми файлами и включает:
+                </div>
+                <ul class='feature-list'>
+                    <li>Функции создания, редактирования и сохранения файлов</li>
+                    <li>Операции с буфером обмена (копирование/вставка)</li>
+                    <li>Механизмы отмены и повтора действий</li>
+                    <li>Лексический анализатор</li>
+                </ul>
+
+                <h2>Лексический анализатор</h2>
+                <div class='description'>
+                    Встроенный анализатор проверяет корректность объявления строковых констант в Java.
+                </div>
+
+                <h3>Поддерживаемые конструкции</h3>
+                <ul class='feature-list'>
+                    <li>Объявление с модификатором <span class='code'>final</span>:
+                        <br><span class='code'>final String str123 = ""Hello"";</span></li>
+                    <li>Строки с Unicode-символами:
+                        <br><span class='code'>final String greeting = ""Привет, мир!"";</span></li>
+                    <li>Строки с escape-последовательностями:
+                        <br><span class='code'>final String path = ""C:\\Program Files\\"";</span></li>
+                </ul>
+
+                <h3>Особенности работы</h3>
+                <ul class='feature-list'>
+                    <li>Проверка синтаксиса объявлений</li>
+                    <li>Выделение лексем (ключевые слова, идентификаторы, строки)</li>
+                    <li>Обнаружение ошибок с указанием позиции</li>
+                    <li>Поддержка многострочного анализа</li>
+                </ul>
+
+                <h3>Пример корректного ввода</h3>
+                <div class='code' style='padding: 10px; margin: 10px 0;'>
+                    final String message = ""Hello World"";<br>
+                    final String empty123_ = """";<br>
+                    final String path = ""C:\\\\Users\\\\"";<br>
                 </div>
             </body>
             </html>";
 
-            // Загружаем HTML
             webBrowser.DocumentText = htmlContent;
             this.Controls.Add(webBrowser);
         }
 
         private void InfoForm_Load(object sender, EventArgs e)
         {
-            // Дополнительные действия при загрузке формы
+           
         }
     }
 }

@@ -432,18 +432,69 @@ namespace NewCompiler
         // Остальные методы оставляем пустыми, как у вас было
         private void файлToolStripMenuItem_Click(object sender, EventArgs e) { }
         private void правкаToolStripMenuItem_Click(object sender, EventArgs e) { }
-        private void текстToolStripMenuItem_Click(object sender, EventArgs e) { }
+        private void текстToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //TextInfoForm textInfoForm = new TextInfoForm();
+            //textInfoForm.ShowDialog();
+        }
         private void пускToolStripMenuItem_Click(object sender, EventArgs e) 
         {
             RunAnalyzer();
         }
         private void справкаToolStripMenuItem1_Click(object sender, EventArgs e) { }
-        private void постановкаЗадачиToolStripMenuItem_Click(object sender, EventArgs e) { }
-        private void грамматикаToolStripMenuItem_Click(object sender, EventArgs e) { }
-        private void классификацияГрамматикиToolStripMenuItem_Click(object sender, EventArgs e) { }
-        private void методАнализаToolStripMenuItem_Click(object sender, EventArgs e) { }
-        private void тестовыйПримерToolStripMenuItem_Click(object sender, EventArgs e) { }
+        private void постановкаЗадачиToolStripMenuItem_Click(object sender, EventArgs e) {
+            ShowTextInfoForm("Постановка задачи");
+        }
+        private void грамматикаToolStripMenuItem_Click(object sender, EventArgs e) {
+            ShowTextInfoForm("Грамматика");
+        }
+        private void классификацияГрамматикиToolStripMenuItem_Click(object sender, EventArgs e) {
+            ShowTextInfoForm("Классификация грамматики");
+        }
+        private void методАнализаToolStripMenuItem_Click(object sender, EventArgs e) {
+            ShowTextInfoForm("Метод анализа");
+        }
+        private void тестовыйПримерToolStripMenuItem_Click(object sender, EventArgs e) {
+            ShowTextInfoForm("Тестовый пример");
+        }
         private void OutputTabControl_SelectedIndexChanged(object sender, EventArgs e) { }
         private void Compiler_Load(object sender, EventArgs e) { }
+
+        private void списокЛитературыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowTextInfoForm("Список литературы");
+        }
+
+        private void исходныйКодПрограммыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowTextInfoForm("Исходный код");
+        }
+
+        private void диToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowTextInfoForm("Диагностика ошибок");
+        }
+
+        private void ShowTextInfoForm(string tabName)
+        {
+            // Создаем новую форму каждый раз
+            TextInfoForm textInfoForm = new TextInfoForm();
+
+            // Находим TabControl в форме
+            var tabControl = textInfoForm.Controls[0] as TabControl;
+
+            // Находим нужную вкладку и делаем её активной
+            foreach (TabPage tab in tabControl.TabPages)
+            {
+                if (tab.Text == tabName)
+                {
+                    tabControl.SelectedTab = tab;
+                    break;
+                }
+            }
+
+            // Показываем форму как модальное окно
+            textInfoForm.ShowDialog();
+        }
     }
 }
