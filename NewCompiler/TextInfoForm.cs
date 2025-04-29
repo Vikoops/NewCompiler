@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace NewCompiler
@@ -75,19 +76,15 @@ namespace NewCompiler
 3. ‹TYPE› → 'String'‹SPACE2›
 4. ‹SPACE2› → ' '‹ID›
 5. ‹ID› → ‹LETTER›‹IDREM›
-6. ‹IDREM› → ‹LETTER›‹IDREM›
-7. ‹IDREM› → ‹DIGIT›‹IDREM›
-8. ‹IDREM› → '='‹QUOTE›
-9. ‹QUOTE› → '""'‹STRING›
-10. ‹STRING› → ‹SYMBOL›‹STRINGREM›
-11. ‹STRINGREM› → ‹SYMBOL›‹STRINGREM›
-12. ‹STRINGREM› → '""'‹END›
-13. ‹END› → ';'
+6. ‹IDREM› → ‹LETTER›‹IDREM› | ‹DIGIT›‹IDREM› | '='‹QUOTE›
+7. ‹QUOTE› → '""'‹STRING›
+8. ‹STRING› → ‹SYMBOL›‹STRINGREM› | '""'‹END›
+9. ‹STRINGREM› → ‹SYMBOL›‹STRINGREM› | '""'‹END›
+10. ‹END› → ';'
 
 • ‹DIGIT› → ""0"" | ""1"" | ""2"" | ""3"" | ""4"" | ""5"" | ""6"" | ""7"" | ""8"" | ""9""
 • ‹LETTER› → ""a"" | ""b"" | ""c"" | ... | ""z"" | ""A"" | ""B"" | ""C"" | ... | ""Z""
 • ‹SYMBOL› → ""a"" | ""b"" | ""c"" | ... | ""z"" | ""A"" | ""B"" | ""C"" | ... | ""Z""| ""0"" | ""1"" | ""2"" | ""3"" | ""4"" | ""5"" | ""6"" | ""7"" | ""8"" | ""9""| ""!"" | ""."" | "","" | ""?"" | ""№"" | ""#"" | ""^"" | ""@"" | ""$""| "";"" | "":"" | "" "" | ""%"" | ""&"" | ""*"" | ""("" | "")"" | ""-"" | ""_"" | ""="" | ""+"" | ""/"" | ""\"" | ""|"" | ""<"" | "">"" | ""~"" | ""`""| ""["" | ""]"" | ""{"" | ""}"" | ""'"""
-
             };
             tabPage.Controls.Add(richTextBox);
             tabControl.TabPages.Add(tabPage);
@@ -110,10 +107,7 @@ namespace NewCompiler
 
         private void AddAnalysisMethodTab(TabControl tabControl)
         {
-            // Создаем вкладку
             var tabPage = new TabPage("Метод анализа");
-
-            // Основной контейнер с прокруткой
             var scrollPanel = new Panel
             {
                 Dock = DockStyle.Fill,
@@ -121,10 +115,8 @@ namespace NewCompiler
                 Padding = new Padding(10)
             };
 
-            // Текущая позиция Y для размещения элементов
             int currentY = 10;
 
-            // Заголовок раздела
             var headerLabel = new Label
             {
                 Text = "Метод анализа",
@@ -135,7 +127,6 @@ namespace NewCompiler
             scrollPanel.Controls.Add(headerLabel);
             currentY += headerLabel.Height + 15;
 
-            // Первая часть текста
             var text1 = new Label
             {
                 Text = "На рисунке 1 представлена диаграмма состояний сканера:",
@@ -146,24 +137,22 @@ namespace NewCompiler
             scrollPanel.Controls.Add(text1);
             currentY += text1.Height + 10;
 
-            // Первое изображение
             try
             {
-                var image = Image.FromFile("Resources/Диаграмма.drawio.png");
                 var picture1 = new PictureBox
                 {
-                    Image = image,
+                    Image = Properties.Resources.Диаграмма_drawio,
                     SizeMode = PictureBoxSizeMode.AutoSize,
                     Location = new Point(10, currentY)
                 };
                 scrollPanel.Controls.Add(picture1);
                 currentY += picture1.Height + 5;
             }
-            catch
+            catch (Exception ex)
             {
                 var errorLabel = new Label
                 {
-                    Text = "Изображение не найдено: Диаграмма.drawio.png",
+                    Text = $"Не удалось загрузить изображение: {ex.Message}",
                     ForeColor = Color.Red,
                     AutoSize = true,
                     Location = new Point(10, currentY)
@@ -172,7 +161,6 @@ namespace NewCompiler
                 currentY += errorLabel.Height + 15;
             }
 
-            // Подпись к первому изображению
             var caption1 = new Label
             {
                 Text = "Рисунок 1 - Диаграмма состояний сканера",
@@ -183,11 +171,10 @@ namespace NewCompiler
             scrollPanel.Controls.Add(caption1);
             currentY += caption1.Height + 20;
 
-            // Основной текст
             var mainText = new Label
             {
                 Text = "Грамматика G[‹START›] является автоматной.\n\n" +
-                      "Правила (1)-(13) для G[‹START›] реализованы на графе (см. рисунок 2).\n\n" +
+                      "Правила (1)-(10) для G[‹START›] реализованы на графе (см. рисунок 2).\n\n" +
                       "Сплошные стрелки на графе характеризуют синтаксически верный разбор; " +
                       "двойные символизируют состояние ошибки (ERROR). Состояние 11 " +
                       "символизирует успешное завершение разбора.",
@@ -199,7 +186,6 @@ namespace NewCompiler
             scrollPanel.Controls.Add(mainText);
             currentY += mainText.Height + 20;
 
-            // Вторая часть текста
             var text2 = new Label
             {
                 Text = "На рисунке 2 представлен граф G[‹START›]:",
@@ -210,24 +196,22 @@ namespace NewCompiler
             scrollPanel.Controls.Add(text2);
             currentY += text2.Height + 10;
 
-            // Второе изображение
             try
             {
-                var image2 = Image.FromFile("Resources/Граф.drawio .png");
                 var picture2 = new PictureBox
                 {
-                    Image = image2,
+                    Image = Properties.Resources.Граф_drawio,
                     SizeMode = PictureBoxSizeMode.AutoSize,
                     Location = new Point(10, currentY)
                 };
                 scrollPanel.Controls.Add(picture2);
                 currentY += picture2.Height + 5;
             }
-            catch
+            catch (Exception ex)
             {
                 var errorLabel2 = new Label
                 {
-                    Text = "Изображение не найдено: Граф.drawio .png",
+                    Text = $"Не удалось загрузить изображение: {ex.Message}",
                     ForeColor = Color.Red,
                     AutoSize = true,
                     Location = new Point(10, currentY)
@@ -236,7 +220,6 @@ namespace NewCompiler
                 currentY += errorLabel2.Height + 15;
             }
 
-            // Подпись ко второму изображению
             var caption2 = new Label
             {
                 Text = "Рисунок 2 - Граф G[‹START›]",
@@ -276,39 +259,106 @@ namespace NewCompiler
             };
             panel.Controls.Add(label);
 
-            // Загрузка тестовых изображений
-            for (int i = 1; i <= 6; i++)
+            // Тестовый пример 1
+            try
             {
-                try
+                var picture1 = new PictureBox
                 {
-                    var image = Image.FromFile($"Resources/ТестовыйПример{i}.png");
-                    var pictureBox = new PictureBox
-                    {
-                        Image = image,
-                        SizeMode = PictureBoxSizeMode.AutoSize,
-                        Dock = DockStyle.Top
-                    };
-                    panel.Controls.Add(pictureBox);
+                    Image = Properties.Resources.ТестовыйПример1,
+                    SizeMode = PictureBoxSizeMode.AutoSize,
+                    Dock = DockStyle.Top
+                };
+                panel.Controls.Add(picture1);
+                panel.Controls.Add(new Label { Text = "Тестовый пример 1", Dock = DockStyle.Top, AutoSize = true });
+            }
+            catch (Exception ex)
+            {
+                panel.Controls.Add(new Label { Text = $"Ошибка загрузки ТестовыйПример1: {ex.Message}", ForeColor = Color.Red, Dock = DockStyle.Top, AutoSize = true });
+            }
 
-                    var imgLabel = new Label
-                    {
-                        Text = $"Тестовый пример {i}",
-                        Dock = DockStyle.Top,
-                        AutoSize = true
-                    };
-                    panel.Controls.Add(imgLabel);
-                }
-                catch
+            // Тестовый пример 2
+            try
+            {
+                var picture2 = new PictureBox
                 {
-                    var errorLabel = new Label
-                    {
-                        Text = $"Изображение не найдено: ТестовыйПример{i}.png",
-                        ForeColor = Color.Red,
-                        Dock = DockStyle.Top,
-                        AutoSize = true
-                    };
-                    panel.Controls.Add(errorLabel);
-                }
+                    Image = Properties.Resources.ТестовыйПример2,
+                    SizeMode = PictureBoxSizeMode.AutoSize,
+                    Dock = DockStyle.Top
+                };
+                panel.Controls.Add(picture2);
+                panel.Controls.Add(new Label { Text = "Тестовый пример 2", Dock = DockStyle.Top, AutoSize = true });
+            }
+            catch (Exception ex)
+            {
+                panel.Controls.Add(new Label { Text = $"Ошибка загрузки ТестовыйПример2: {ex.Message}", ForeColor = Color.Red, Dock = DockStyle.Top, AutoSize = true });
+            }
+
+            // Тестовый пример 3
+            try
+            {
+                var picture3 = new PictureBox
+                {
+                    Image = Properties.Resources.ТестовыйПример3,
+                    SizeMode = PictureBoxSizeMode.AutoSize,
+                    Dock = DockStyle.Top
+                };
+                panel.Controls.Add(picture3);
+                panel.Controls.Add(new Label { Text = "Тестовый пример 3", Dock = DockStyle.Top, AutoSize = true });
+            }
+            catch (Exception ex)
+            {
+                panel.Controls.Add(new Label { Text = $"Ошибка загрузки ТестовыйПример3: {ex.Message}", ForeColor = Color.Red, Dock = DockStyle.Top, AutoSize = true });
+            }
+
+            // Тестовый пример 4
+            try
+            {
+                var picture4 = new PictureBox
+                {
+                    Image = Properties.Resources.ТестовыйПример4,
+                    SizeMode = PictureBoxSizeMode.AutoSize,
+                    Dock = DockStyle.Top
+                };
+                panel.Controls.Add(picture4);
+                panel.Controls.Add(new Label { Text = "Тестовый пример 4", Dock = DockStyle.Top, AutoSize = true });
+            }
+            catch (Exception ex)
+            {
+                panel.Controls.Add(new Label { Text = $"Ошибка загрузки ТестовыйПример4: {ex.Message}", ForeColor = Color.Red, Dock = DockStyle.Top, AutoSize = true });
+            }
+
+            // Тестовый пример 5
+            try
+            {
+                var picture5 = new PictureBox
+                {
+                    Image = Properties.Resources.ТестовыйПример5,
+                    SizeMode = PictureBoxSizeMode.AutoSize,
+                    Dock = DockStyle.Top
+                };
+                panel.Controls.Add(picture5);
+                panel.Controls.Add(new Label { Text = "Тестовый пример 5", Dock = DockStyle.Top, AutoSize = true });
+            }
+            catch (Exception ex)
+            {
+                panel.Controls.Add(new Label { Text = $"Ошибка загрузки ТестовыйПример5: {ex.Message}", ForeColor = Color.Red, Dock = DockStyle.Top, AutoSize = true });
+            }
+
+            // Тестовый пример 6
+            try
+            {
+                var picture6 = new PictureBox
+                {
+                    Image = Properties.Resources.ТестовыйПример6,
+                    SizeMode = PictureBoxSizeMode.AutoSize,
+                    Dock = DockStyle.Top
+                };
+                panel.Controls.Add(picture6);
+                panel.Controls.Add(new Label { Text = "Тестовый пример 6", Dock = DockStyle.Top, AutoSize = true });
+            }
+            catch (Exception ex)
+            {
+                panel.Controls.Add(new Label { Text = $"Ошибка загрузки ТестовыйПример6: {ex.Message}", ForeColor = Color.Red, Dock = DockStyle.Top, AutoSize = true });
             }
 
             tabPage.Controls.Add(panel);

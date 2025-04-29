@@ -151,4 +151,28 @@
   <data name="4213426_about_description_help_info_information_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\4213426_about_description_help_info_information_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Диаграмма.drawio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Диаграмма.drawio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ТестовыйПример1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ТестовыйПример1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ТестовыйПример2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ТестовыйПример2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ТестовыйПример3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ТестовыйПример3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ТестовыйПример4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ТестовыйПример4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ТестовыйПример5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ТестовыйПример5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ТестовыйПример6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ТестовыйПример6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Граф_drawio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Граф.drawio .png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

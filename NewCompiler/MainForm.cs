@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace NewCompiler
@@ -21,7 +22,7 @@ namespace NewCompiler
 
             // Настройка вкладок
             InputTabControl.TabPages.Add("Новый файл");
-            OutputTabControl.TabPages.Add("Результат");
+            //OutputTabControl.TabPages.Add("Результат");
 
             // Настройка RichTextBox
             var inputRichTextBox = new RichTextBox
@@ -55,7 +56,30 @@ namespace NewCompiler
             if (InputTabControl.TabCount > 0 && GetCurrentRichTextBox() != null)
             {
                 string inputText = GetCurrentRichTextBox().Text;
-                analyzer.Analyze(inputText, GetOutputDataGridView());
+
+                //analyzer.Analyze(inputText, GetOutputDataGridView());
+
+                TabPage existingParserTab = OutputTabControl.TabPages
+                    .Cast<TabPage>()
+                    .FirstOrDefault(tp => tp.Text == "Parser Output");
+
+                if (existingParserTab != null)
+                {
+                    OutputTabControl.TabPages.Remove(existingParserTab);
+                    existingParserTab.Dispose(); 
+                }
+
+                TabPage parserTab = new TabPage("Parser Output");
+                DataGridView parserGridView = new DataGridView
+                {
+                    Dock = DockStyle.Fill
+                };
+                parserTab.Controls.Add(parserGridView);
+                OutputTabControl.TabPages.Add(parserTab);
+
+                Parser parser = new Parser();
+                parser.Parse(inputText);
+                parser.ShowResults(parserGridView);
             }
             else
             {
@@ -63,6 +87,8 @@ namespace NewCompiler
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
         private DataGridView GetOutputDataGridView()
         {
             // Создаем DataGridView в первой вкладке OutputTabControl, если его нет
