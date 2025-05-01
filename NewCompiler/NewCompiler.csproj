@@ -73,6 +73,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tetrada.cs" />
     <Compile Include="TextInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>

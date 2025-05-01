@@ -51,6 +51,7 @@ namespace NewCompiler
             this.FormClosing += Compiler_FormClosing;
         }
 
+
         private void RunAnalyzer()
         {
             if (InputTabControl.TabCount > 0 && GetCurrentRichTextBox() != null)
@@ -59,27 +60,56 @@ namespace NewCompiler
 
                 //analyzer.Analyze(inputText, GetOutputDataGridView());
 
-                TabPage existingParserTab = OutputTabControl.TabPages
-                    .Cast<TabPage>()
-                    .FirstOrDefault(tp => tp.Text == "Parser Output");
+                //TabPage existingParserTab = OutputTabControl.TabPages
+                //    .Cast<TabPage>()
+                //    .FirstOrDefault(tp => tp.Text == "Parser Output");
 
-                if (existingParserTab != null)
+                //if (existingParserTab != null)
+                //{
+                //    OutputTabControl.TabPages.Remove(existingParserTab);
+                //    existingParserTab.Dispose();
+                //}
+
+                //TabPage parserTab = new TabPage("Parser Output");
+                //DataGridView parserGridView = new DataGridView
+                //{
+                //    Dock = DockStyle.Fill
+                //};
+                //parserTab.Controls.Add(parserGridView);
+                //OutputTabControl.TabPages.Add(parserTab);
+
+                //Parser parser = new Parser();
+                //parser.Parse(inputText);
+                //parser.ShowResults(parserGridView);
+
+                // Проверяем и удаляем существующую вкладку "Тетрады", если она есть
+                TabPage existingTetradaTab = OutputTabControl.TabPages
+                    .Cast<TabPage>()
+                    .FirstOrDefault(tp => tp.Text == "Тетрады");
+
+                if (existingTetradaTab != null)
                 {
-                    OutputTabControl.TabPages.Remove(existingParserTab);
-                    existingParserTab.Dispose(); 
+                    OutputTabControl.TabPages.Remove(existingTetradaTab);
+                    existingTetradaTab.Dispose();
                 }
 
-                TabPage parserTab = new TabPage("Parser Output");
-                DataGridView parserGridView = new DataGridView
+                // Создаем новую вкладку для вывода тетрад
+                TabPage tetradaTab = new TabPage("Тетрады");
+                DataGridView tetradaGridView = new DataGridView
                 {
-                    Dock = DockStyle.Fill
+                    Dock = DockStyle.Fill,
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill // Добавляем автоподбор ширины колонок
                 };
-                parserTab.Controls.Add(parserGridView);
-                OutputTabControl.TabPages.Add(parserTab);
+                tetradaTab.Controls.Add(tetradaGridView);
+                OutputTabControl.TabPages.Add(tetradaTab);
 
-                Parser parser = new Parser();
-                parser.Parse(inputText);
-                parser.ShowResults(parserGridView);
+                // Запускаем анализ и выводим результаты
+                Tetrada.AnalyzeExpression(
+                    inputText,
+                    GetCurrentRichTextBox(),
+                    tetradaGridView
+                );
+
             }
             else
             {
