@@ -82,3 +82,8 @@
 ```
 
 В ходе выполнения 5 лабораторной был закомментирован лексер и парсер для первых 4-х лабораторных и был написан новый лексер и новый парсер уже для 5-ой.
+
+## Тестовые примеры
+![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады1.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады2.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады3.png)
