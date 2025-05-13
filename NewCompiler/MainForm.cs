@@ -84,8 +84,8 @@ namespace NewCompiler
 
                 // Проверяем и удаляем существующую вкладку "Тетрады", если она есть
                 TabPage existingTetradaTab = OutputTabControl.TabPages
-                    .Cast<TabPage>()
-                    .FirstOrDefault(tp => tp.Text == "Тетрады");
+    .Cast<TabPage>()
+    .FirstOrDefault(tp => tp.Text == "Тетрады");
 
                 if (existingTetradaTab != null)
                 {
@@ -95,19 +95,39 @@ namespace NewCompiler
 
                 // Создаем новую вкладку для вывода тетрад
                 TabPage tetradaTab = new TabPage("Тетрады");
+                SplitContainer splitContainer = new SplitContainer
+                {
+                    Dock = DockStyle.Fill,
+                    Orientation = Orientation.Vertical
+                };
+
                 DataGridView tetradaGridView = new DataGridView
                 {
                     Dock = DockStyle.Fill,
-                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill // Добавляем автоподбор ширины колонок
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 };
-                tetradaTab.Controls.Add(tetradaGridView);
+
+                TextBox errorTextBox = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    Multiline = true,
+                    ScrollBars = ScrollBars.Vertical,
+                    ReadOnly = true,
+                    BackColor = SystemColors.Window,
+                    Visible = false
+                };
+
+                splitContainer.Panel1.Controls.Add(tetradaGridView);
+                splitContainer.Panel2.Controls.Add(errorTextBox);
+                tetradaTab.Controls.Add(splitContainer);
                 OutputTabControl.TabPages.Add(tetradaTab);
 
                 // Запускаем анализ и выводим результаты
                 Tetrada.AnalyzeExpression(
                     inputText,
                     GetCurrentRichTextBox(),
-                    tetradaGridView
+                    tetradaGridView,
+                    errorTextBox
                 );
 
             }

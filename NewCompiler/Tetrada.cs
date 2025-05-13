@@ -12,7 +12,7 @@ namespace NewCompiler
         // Лексический анализатор
         public class Lexer
         {
-            public enum TokenType { Plus, Minus, Mul, Div, LParen, RParen, Identifier, End }
+            public enum TokenType { Plus, Assign, Minus, Mul, Div, LParen, RParen, Identifier, End }
 
             public class Token
             {
@@ -83,6 +83,7 @@ namespace NewCompiler
                         case '/': Tokens.Add(new Token(TokenType.Div, "/", _idx)); break;
                         case '(': Tokens.Add(new Token(TokenType.LParen, "(", _idx)); break;
                         case ')': Tokens.Add(new Token(TokenType.RParen, ")", _idx)); break;
+                        case '=': Tokens.Add(new Token(TokenType.Assign, "=", _idx)); break;
                         default:
                             Errors.Add(new LexicalError($"Недопустимый символ '{c}'", _idx, 1));
                             break;
@@ -135,6 +136,7 @@ namespace NewCompiler
             public List<SyntaxError> Errors { get; } = new List<SyntaxError>();
 
             private Lexer.Token Current => _tokens[_pos];
+            private Lexer.Token Peek(int offset) => (_pos + offset) < _tokens.Count ? _tokens[_pos + offset] : new Lexer.Token(Lexer.TokenType.End, string.Empty, _pos + offset);
 
             public Parser(List<Lexer.Token> tokens)
             {
@@ -143,7 +145,12 @@ namespace NewCompiler
                 _tempCount = 0;
             }
 
-            private void Advance() => _pos = Math.Min(_pos + 1, _tokens.Count - 1);
+            private void Advance()
+            {
+                if (_pos < _tokens.Count - 1)
+                    _pos++;
+            }
+
             private bool Match(Lexer.TokenType expected)
             {
                 if (Current.Type == expected)
@@ -152,10 +159,9 @@ namespace NewCompiler
                     return true;
                 }
                 Errors.Add(new SyntaxError(
-                    $"Ожидалось {expected}, а встретилось '{Current.Lexeme}'",
+                    $"Ожидался «{expected}», а встретилось «{Current.Lexeme}»",
                     Current.Position,
                     Current.Lexeme.Length));
-                Advance();
                 return false;
             }
 
@@ -163,39 +169,90 @@ namespace NewCompiler
 
             public void Parse()
             {
-                string result = ParseE();
+                ParseStatement();
                 if (Current.Type != Lexer.TokenType.End)
                 {
                     Errors.Add(new SyntaxError(
-                        $"Лишний токен '{Current.Lexeme}'",
+                        $"Лишний токен «{Current.Lexeme}» после конца оператора",
                         Current.Position,
                         Current.Lexeme.Length));
                 }
             }
 
+            private void ParseStatement()
+            {
+                // Assignment: id = expr
+                if (Current.Type == Lexer.TokenType.Identifier && Peek(1).Type == Lexer.TokenType.Assign)
+                {
+                    var id = Current.Lexeme;
+                    Advance(); // id
+                    Advance(); // =
+                    var exprRes = ParseE();
+                    if (string.IsNullOrEmpty(exprRes))
+                    {
+                        Errors.Add(new SyntaxError(
+                            "Ожидалось выражение после «=»",
+                            Current.Position,
+                            Current.Lexeme.Length));
+                    }
+                    else
+                    {
+                        Quads.Add(new Quad("=", exprRes, string.Empty, id));
+                    }
+                }
+                // Unexpected closing parenthesis at top-level
+                else if (Current.Type == Lexer.TokenType.RParen)
+                {
+                    Errors.Add(new SyntaxError(
+                        "Неправильная закрывающая скобка без соответствующей открывающей",
+                        Current.Position,
+                        Current.Lexeme.Length));
+                    Advance();
+                }
+                else
+                {
+                    // Regular expression
+                    _ = ParseE();
+                }
+            }
+
             private string ParseE()
             {
+                if (Current.Type == Lexer.TokenType.RParen)
+                {
+                    Errors.Add(new SyntaxError(
+                        "Неправильная закрывающая скобка без соответствующей открывающей",
+                        Current.Position,
+                        Current.Lexeme.Length));
+                    Advance();
+                    return string.Empty;
+                }
+
+                if (Current.Type == Lexer.TokenType.Plus || Current.Type == Lexer.TokenType.Minus ||
+                    Current.Type == Lexer.TokenType.Mul || Current.Type == Lexer.TokenType.Div)
+                {
+                    // Operator without left operand
+                    Errors.Add(new SyntaxError(
+                        $"Ожидался идентификатор или «(» перед «{Current.Lexeme}»",
+                        Current.Position,
+                        Current.Lexeme.Length));
+                    Advance();
+                }
+
                 var t = ParseT();
                 return ParseA(t);
             }
 
             private string ParseA(string inh)
             {
-                if (Current.Type == Lexer.TokenType.Plus)
+                while (Current.Type == Lexer.TokenType.Plus || Current.Type == Lexer.TokenType.Minus)
                 {
+                    var op = Current.Lexeme;
                     Advance();
                     var t2 = ParseT();
                     var res = NewTemp();
-                    Quads.Add(new Quad("+", inh, t2, res));
-                    return ParseA(res);
-                }
-                if (Current.Type == Lexer.TokenType.Minus)
-                {
-                    Advance();
-                    var t2 = ParseT();
-                    var res = NewTemp();
-                    Quads.Add(new Quad("-", inh, t2, res));
-                    return ParseA(res);
+                    Quads.Add(new Quad(op, inh, t2, res));
+                    inh = res;
                 }
                 return inh;
             }
@@ -208,21 +265,14 @@ namespace NewCompiler
 
             private string ParseB(string inh)
             {
-                if (Current.Type == Lexer.TokenType.Mul)
+                while (Current.Type == Lexer.TokenType.Mul || Current.Type == Lexer.TokenType.Div)
                 {
+                    var op = Current.Lexeme;
                     Advance();
                     var o2 = ParseO();
                     var res = NewTemp();
-                    Quads.Add(new Quad("*", inh, o2, res));
-                    return ParseB(res);
-                }
-                if (Current.Type == Lexer.TokenType.Div)
-                {
-                    Advance();
-                    var o2 = ParseO();
-                    var res = NewTemp();
-                    Quads.Add(new Quad("/", inh, o2, res));
-                    return ParseB(res);
+                    Quads.Add(new Quad(op, inh, o2, res));
+                    inh = res;
                 }
                 return inh;
             }
@@ -237,13 +287,31 @@ namespace NewCompiler
                 }
                 if (Current.Type == Lexer.TokenType.LParen)
                 {
+                    var pos = Current.Position;
                     Advance();
                     var e = ParseE();
-                    Match(Lexer.TokenType.RParen);
+                    if (!Match(Lexer.TokenType.RParen))
+                    {
+                        Errors.Add(new SyntaxError(
+                            "Отсутствует закрывающая скобка «)»",
+                            pos,
+                            1));
+                    }
                     return e;
                 }
+                if (Current.Type == Lexer.TokenType.RParen)
+                {
+                    Errors.Add(new SyntaxError(
+                        "Неправильная закрывающая скобка без соответствующей открывающей",
+                        Current.Position,
+                        Current.Lexeme.Length));
+                    Advance();
+                    return string.Empty;
+                }
+
+                // Unexpected token
                 Errors.Add(new SyntaxError(
-                    $"Непредвиденный токен '{Current.Lexeme}'",
+                    $"Непредвиденный токен «{Current.Lexeme}», ожидался идентификатор или «(»",
                     Current.Position,
                     Current.Lexeme.Length));
                 Advance();
@@ -252,45 +320,87 @@ namespace NewCompiler
         }
 
         // Интерфейс для интеграции с вашей программой
-        public static void AnalyzeExpression(string input, RichTextBox richTextBox, DataGridView dataGridView)
+        public static void AnalyzeExpression(string input, RichTextBox richTextBox, DataGridView dataGridView, TextBox errorTextBox = null)
         {
             // Сброс подсветки
             richTextBox.SelectAll();
             richTextBox.SelectionBackColor = Color.White;
 
+            // Очистка предыдущих ошибок
+            if (errorTextBox != null)
+            {
+                errorTextBox.Clear();
+                errorTextBox.Visible = false;
+            }
+
             var lexer = new Lexer(input);
             lexer.Tokenize();
 
-            // Подсветка лексических ошибок
-            foreach (var err in lexer.Errors)
+            bool hasErrors = false;
+
+            // Обработка лексических ошибок
+            if (lexer.Errors.Any())
             {
-                richTextBox.Select(err.Position, err.Length);
-                richTextBox.SelectionBackColor = Color.Yellow;
+                hasErrors = true;
+                foreach (var err in lexer.Errors)
+                {
+                    richTextBox.Select(err.Position, err.Length);
+                    richTextBox.SelectionBackColor = Color.Yellow;
+
+                    if (errorTextBox != null)
+                    {
+                        errorTextBox.AppendText($"Лексическая ошибка: {err.Message} (позиция {err.Position})\r\n");
+                        errorTextBox.Visible = true;
+                    }
+                }
             }
-            if (lexer.Errors.Any()) return;
 
-            var parser = new Parser(lexer.Tokens);
-            parser.Parse();
-
-            // Подсветка синтаксических ошибок
-            foreach (var err in parser.Errors)
+            if (!hasErrors)
             {
-                richTextBox.Select(err.Position, err.Length);
-                richTextBox.SelectionBackColor = Color.LightPink;
+                var parser = new Parser(lexer.Tokens);
+                parser.Parse();
+
+                // Обработка синтаксических ошибок
+                if (parser.Errors.Any())
+                {
+                    hasErrors = true;
+                    foreach (var err in parser.Errors)
+                    {
+                        richTextBox.Select(err.Position, err.Length);
+                        richTextBox.SelectionBackColor = Color.LightPink;
+
+                        if (errorTextBox != null)
+                        {
+                            errorTextBox.AppendText($"Синтаксическая ошибка: {err.Message} (позиция {err.Position})\r\n");
+                            errorTextBox.Visible = true;
+                        }
+                    }
+                }
+
+                // Если ошибок нет - выводим тетрады
+                if (!hasErrors)
+                {
+                    dataGridView.Columns.Clear();
+                    dataGridView.Columns.Add("op", "Операция");
+                    dataGridView.Columns.Add("arg1", "Аргумент 1");
+                    dataGridView.Columns.Add("arg2", "Аргумент 2");
+                    dataGridView.Columns.Add("result", "Результат");
+                    dataGridView.Rows.Clear();
+
+                    foreach (var q in parser.Quads)
+                    {
+                        dataGridView.Rows.Add(q.Op, q.Arg1, q.Arg2, q.Result);
+                    }
+                }
             }
-            if (parser.Errors.Any()) return;
 
-            // Вывод тетрад
-            dataGridView.Columns.Clear();
-            dataGridView.Columns.Add("op", "Операция");
-            dataGridView.Columns.Add("arg1", "Аргумент 1");
-            dataGridView.Columns.Add("arg2", "Аргумент 2");
-            dataGridView.Columns.Add("result", "Результат");
-            dataGridView.Rows.Clear();
-
-            foreach (var q in parser.Quads)
+            if (hasErrors)
             {
-                dataGridView.Rows.Add(q.Op, q.Arg1, q.Arg2, q.Result);
+                dataGridView.Rows.Clear();
+                if (errorTextBox != null)
+                {
+                    errorTextBox.Focus();
+                }
             }
         }
     }
