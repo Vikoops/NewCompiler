@@ -1,6 +1,9 @@
 
+# Лабораторные 1-4
+
 ## Вариант:
 Объявление и инициализация строковой константы на языке Java.
+
 ## Пример допустимой строки:
 ```Java
   final String str = "Hello World"; 
@@ -10,10 +13,10 @@
 ```
 
 ## Диаграмма состояний сканера
-![](https://github.com/Vikoops/NewCompiler/blob/master/Диаграмма.drawio.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Диаграмма.drawio.png)
 
 ## Граф
-![](https://github.com/Vikoops/NewCompiler/blob/master/Граф.drawio%20.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Граф.drawio%20.png)
 
 ## Грамматика
 1. `‹START›` → `'final'‹SPACE1›`
@@ -39,8 +42,8 @@
 - **VN** = {‹START›, ‹SPACE1›, ‹TYPE›, ‹SPACE2›, ‹ID›, ‹IDREM›, ‹QUOTE›, ‹STRING›, ‹STRINGREM›, ‹END›}
 
 ## Тестовые примеры
-![](https://github.com/Vikoops/NewCompiler/blob/master/Тестовый_пример_1.png)
-![](https://github.com/Vikoops/NewCompiler/blob/master/Тестовый_пример_2.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Тестовый_пример_1.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Тестовый_пример_2.png)
 
 # Справка
 ## Файл
@@ -59,7 +62,9 @@
 - **Выделить все** - выделяется весь текст из окна редактирования.
 
 
-## Постановка задачи для 5 лабораторной работы:
+# Лабораторная 5
+
+## Постановка задачи
 Выполнить разбор строки в виде тетрад
 
 1) Реализовать в текстовом редакторе поиск лексических и синтаксических ошибок для грамматики G[<E>]. Реализовать данную КС-граммматику методом рекурсивного спуска:
@@ -73,7 +78,6 @@
 
 2) Реализовать алгоритм записи выражений в форме тетрад.
 
-
 ### Примеры верных строк:
 ```
 1. a + b * (c - d)
@@ -81,9 +85,32 @@
 3. c = a + b
 ```
 
-В ходе выполнения 5 лабораторной был закомментирован лексер и парсер для первых 4-х лабораторных и был написан новый лексер и новый парсер уже для 5-ой.
-
 ## Тестовые примеры
-![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады1.png)
-![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады2.png)
-![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады3.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестТетрады1.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестТетрады2.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестТетрады3.png)
+
+
+# Лабораторная 6 
+
+## Решение 1 блока задач:
+```
+private static readonly Regex PunctuationRx = new Regex(@"[^\w\s-]|_");
+```
+## Решение 2 блока задач:
+```
+private static readonly Regex AmexCardRx = new Regex(@"\b3[47]\d{2}[-\s]?\d{6}[-\s]?\d{5}\b");
+```
+## Решение 3 блока задач:
+```
+private static readonly Regex RgbColorRx = new Regex(@"(?:^|\s)rgb\(\s*(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*,\s*(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*,\s*(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*\)",
+RegexOptions.IgnoreCase);
+```
+
+## Тестовые примерры
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_1.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_2.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_3.png)
+
+## Доп задание
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Граф6.drawio.png)
