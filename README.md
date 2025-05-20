@@ -107,3 +107,7 @@ private static readonly Regex RgbColorRx = new Regex(@"(?:^|\s)rgb\(\s*(25[0-5]|
 RegexOptions.IgnoreCase);
 ```
 
+## Тестовые примерры
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_1.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_2.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_3.png)
