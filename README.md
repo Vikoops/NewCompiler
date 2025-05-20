@@ -10,10 +10,10 @@
 ```
 
 ## Диаграмма состояний сканера
-![](https://github.com/Vikoops/NewCompiler/blob/master/Диаграмма.drawio.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Диаграмма.drawio.png)
 
 ## Граф
-![](https://github.com/Vikoops/NewCompiler/blob/master/Граф.drawio%20.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Граф.drawio%20.png)
 
 ## Грамматика
 1. `‹START›` → `'final'‹SPACE1›`
@@ -39,8 +39,8 @@
 - **VN** = {‹START›, ‹SPACE1›, ‹TYPE›, ‹SPACE2›, ‹ID›, ‹IDREM›, ‹QUOTE›, ‹STRING›, ‹STRINGREM›, ‹END›}
 
 ## Тестовые примеры
-![](https://github.com/Vikoops/NewCompiler/blob/master/Тестовый_пример_1.png)
-![](https://github.com/Vikoops/NewCompiler/blob/master/Тестовый_пример_2.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Тестовый_пример_1.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/Тестовый_пример_2.png)
 
 # Справка
 ## Файл
@@ -84,6 +84,6 @@
 В ходе выполнения 5 лабораторной был закомментирован лексер и парсер для первых 4-х лабораторных и был написан новый лексер и новый парсер уже для 5-ой.
 
 ## Тестовые примеры
-![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады1.png)
-![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады2.png)
-![](https://github.com/Vikoops/NewCompiler/blob/master/ТестТетрады3.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестТетрады1.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестТетрады2.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестТетрады3.png)
