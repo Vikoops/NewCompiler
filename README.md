@@ -111,3 +111,6 @@ RegexOptions.IgnoreCase);
 ![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_1.png)
 ![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_2.png)
 ![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_3.png)
+
+## Доп задание
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/граф6.drawio.png)
