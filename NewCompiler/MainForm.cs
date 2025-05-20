@@ -83,52 +83,81 @@ namespace NewCompiler
                 //parser.ShowResults(parserGridView);
 
                 // Проверяем и удаляем существующую вкладку "Тетрады", если она есть
-                TabPage existingTetradaTab = OutputTabControl.TabPages
-    .Cast<TabPage>()
-    .FirstOrDefault(tp => tp.Text == "Тетрады");
 
-                if (existingTetradaTab != null)
+
+
+                //            TabPage existingTetradaTab = OutputTabControl.TabPages
+                //.Cast<TabPage>()
+                //.FirstOrDefault(tp => tp.Text == "Тетрады");
+
+                //            if (existingTetradaTab != null)
+                //            {
+                //                OutputTabControl.TabPages.Remove(existingTetradaTab);
+                //                existingTetradaTab.Dispose();
+                //            }
+
+                //            // Создаем новую вкладку для вывода тетрад
+                //            TabPage tetradaTab = new TabPage("Тетрады");
+                //            SplitContainer splitContainer = new SplitContainer
+                //            {
+                //                Dock = DockStyle.Fill,
+                //                Orientation = Orientation.Vertical
+                //            };
+
+                //            DataGridView tetradaGridView = new DataGridView
+                //            {
+                //                Dock = DockStyle.Fill,
+                //                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                //            };
+
+                //            TextBox errorTextBox = new TextBox
+                //            {
+                //                Dock = DockStyle.Fill,
+                //                Multiline = true,
+                //                ScrollBars = ScrollBars.Vertical,
+                //                ReadOnly = true,
+                //                BackColor = SystemColors.Window,
+                //                Visible = false
+                //            };
+
+                //            splitContainer.Panel1.Controls.Add(tetradaGridView);
+                //            splitContainer.Panel2.Controls.Add(errorTextBox);
+                //            tetradaTab.Controls.Add(splitContainer);
+                //            OutputTabControl.TabPages.Add(tetradaTab);
+
+                //            // Запускаем анализ и выводим результаты
+                //            Tetrada.AnalyzeExpression(
+                //                inputText,
+                //                GetCurrentRichTextBox(),
+                //                tetradaGridView,
+                //                errorTextBox
+                //            );
+
+                
+
+                // Создаем новую вкладку для вывода результатов регулярных выражений
+                TabPage existingRegularTab = OutputTabControl.TabPages
+                    .Cast<TabPage>()
+                    .FirstOrDefault(tp => tp.Text == "Regular Expressions");
+
+                if (existingRegularTab != null)
                 {
-                    OutputTabControl.TabPages.Remove(existingTetradaTab);
-                    existingTetradaTab.Dispose();
+                    OutputTabControl.TabPages.Remove(existingRegularTab);
+                    existingRegularTab.Dispose();
                 }
 
-                // Создаем новую вкладку для вывода тетрад
-                TabPage tetradaTab = new TabPage("Тетрады");
-                SplitContainer splitContainer = new SplitContainer
-                {
-                    Dock = DockStyle.Fill,
-                    Orientation = Orientation.Vertical
-                };
-
-                DataGridView tetradaGridView = new DataGridView
+                TabPage regularTab = new TabPage("Regular Expressions");
+                DataGridView regularGridView = new DataGridView
                 {
                     Dock = DockStyle.Fill,
                     AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 };
+                regularTab.Controls.Add(regularGridView);
+                OutputTabControl.TabPages.Add(regularTab);
 
-                TextBox errorTextBox = new TextBox
-                {
-                    Dock = DockStyle.Fill,
-                    Multiline = true,
-                    ScrollBars = ScrollBars.Vertical,
-                    ReadOnly = true,
-                    BackColor = SystemColors.Window,
-                    Visible = false
-                };
+                // Запускаем анализ регулярных выражений
+                Regular.Analyze(inputText, GetCurrentRichTextBox(), regularGridView);
 
-                splitContainer.Panel1.Controls.Add(tetradaGridView);
-                splitContainer.Panel2.Controls.Add(errorTextBox);
-                tetradaTab.Controls.Add(splitContainer);
-                OutputTabControl.TabPages.Add(tetradaTab);
-
-                // Запускаем анализ и выводим результаты
-                Tetrada.AnalyzeExpression(
-                    inputText,
-                    GetCurrentRichTextBox(),
-                    tetradaGridView,
-                    errorTextBox
-                );
 
             }
             else
