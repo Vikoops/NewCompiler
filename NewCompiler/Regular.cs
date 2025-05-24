@@ -225,6 +225,35 @@ namespace NewCompiler
                 return results;
             }
         }
+        // В классе Regular добавьте следующие методы:
 
+        public static void AnalyzePunctuation(string inputText, RichTextBox richTextBox, DataGridView dataGridView)
+        {
+            SetupGrid(dataGridView);
+            Search(PunctuationRx, "Знаки препинания", null, richTextBox, dataGridView);
+        }
+
+        public static void AnalyzeAmexCards(string inputText, RichTextBox richTextBox, DataGridView dataGridView)
+        {
+            SetupGrid(dataGridView);
+            Search(AmexCardRx, "Amex Card", ValidateAmexCard, richTextBox, dataGridView);
+        }
+
+        public static void AnalyzeRgbColors(string inputText, RichTextBox richTextBox, DataGridView dataGridView)
+        {
+            SetupGrid(dataGridView);
+
+            // Используем автомат для поиска RGB цветов
+            var rgbMatches = RgbAutomaton.FindRgbColors(inputText);
+            foreach (var (value, position) in rgbMatches)
+            {
+                dataGridView.Rows.Add("RGB цвет", value, position, "✔");
+                richTextBox.Select(position, value.Length);
+                richTextBox.SelectionBackColor = Color.Yellow;
+            }
+
+            // Альтернативно можно использовать регулярное выражение
+            // Search(RgbColorRx, "RGB цвет", null, richTextBox, dataGridView);
+        }
     }
 }

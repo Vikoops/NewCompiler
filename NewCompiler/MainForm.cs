@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using static NewCompiler.Regular;
 
 namespace NewCompiler
 {
@@ -601,5 +602,71 @@ namespace NewCompiler
             // Показываем форму как модальное окно
             textInfoForm.ShowDialog();
         }
+
+        // В классе Compiler добавьте следующие методы для обработки кнопок:
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            RunSpecificAnalyzer(1); // Для кнопки 1 - знаки препинания
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            RunSpecificAnalyzer(2); // Для кнопки 2 - Amex Card
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            RunSpecificAnalyzer(3); // Для кнопки 3 - RGB цвета
+        }
+
+        private void RunSpecificAnalyzer(int analyzerType)
+        {
+            if (InputTabControl.TabCount > 0 && GetCurrentRichTextBox() != null)
+            {
+                string inputText = GetCurrentRichTextBox().Text;
+
+                // Создаем новую вкладку для вывода результатов
+                TabPage existingRegularTab = OutputTabControl.TabPages
+                    .Cast<TabPage>()
+                    .FirstOrDefault(tp => tp.Text == "Regular Expressions");
+
+                if (existingRegularTab != null)
+                {
+                    OutputTabControl.TabPages.Remove(existingRegularTab);
+                    existingRegularTab.Dispose();
+                }
+
+                TabPage regularTab = new TabPage("Regular Expressions");
+                DataGridView regularGridView = new DataGridView
+                {
+                    Dock = DockStyle.Fill,
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                };
+                regularTab.Controls.Add(regularGridView);
+                OutputTabControl.TabPages.Add(regularTab);
+
+                // Запускаем выбранный анализатор
+                switch (analyzerType)
+                {
+                    case 1:
+                        Regular.AnalyzePunctuation(inputText, GetCurrentRichTextBox(), regularGridView);
+                        break;
+                    case 2:
+                        Regular.AnalyzeAmexCards(inputText, GetCurrentRichTextBox(), regularGridView);
+                        break;
+                    case 3:
+                        Regular.AnalyzeRgbColors(inputText, GetCurrentRichTextBox(), regularGridView);
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Нет открытых файлов для анализа", "Ошибка",
+                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+       
     }
 }

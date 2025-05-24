@@ -75,6 +75,9 @@ namespace NewCompiler
             this.InputTabControl = new System.Windows.Forms.TabControl();
             this.OutputTabControl = new System.Windows.Forms.TabControl();
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -102,7 +105,7 @@ namespace NewCompiler
             // пускToolStripMenuItem
             // 
             this.пускToolStripMenuItem.Name = "пускToolStripMenuItem";
-            this.пускToolStripMenuItem.Size = new System.Drawing.Size(55, 26);
+            this.пускToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.пускToolStripMenuItem.Text = "Пуск";
             this.пускToolStripMenuItem.Click += new System.EventHandler(this.пускToolStripMenuItem_Click);
             // 
@@ -112,7 +115,7 @@ namespace NewCompiler
             this.вызовСправкиToolStripMenuItem,
             this.оПрограммеToolStripMenuItem});
             this.справкаToolStripMenuItem1.Name = "справкаToolStripMenuItem1";
-            this.справкаToolStripMenuItem1.Size = new System.Drawing.Size(81, 26);
+            this.справкаToolStripMenuItem1.Size = new System.Drawing.Size(81, 24);
             this.справкаToolStripMenuItem1.Text = "Справка";
             this.справкаToolStripMenuItem1.Click += new System.EventHandler(this.справкаToolStripMenuItem1_Click);
             // 
@@ -280,7 +283,7 @@ namespace NewCompiler
             this.справкаToolStripMenuItem1});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(800, 30);
+            this.MenuStrip.Size = new System.Drawing.Size(800, 28);
             this.MenuStrip.TabIndex = 24;
             this.MenuStrip.Text = "menuStrip1";
             // 
@@ -293,7 +296,7 @@ namespace NewCompiler
             this.сохранитьКакToolStripMenuItem,
             this.выходToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            this.файлToolStripMenuItem.Size = new System.Drawing.Size(59, 26);
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.файлToolStripMenuItem.Text = "Файл";
             this.файлToolStripMenuItem.Click += new System.EventHandler(this.файлToolStripMenuItem_Click);
             // 
@@ -343,7 +346,7 @@ namespace NewCompiler
             this.удалитьToolStripMenuItem,
             this.выделитьВсеToolStripMenuItem});
             this.правкаToolStripMenuItem.Name = "правкаToolStripMenuItem";
-            this.правкаToolStripMenuItem.Size = new System.Drawing.Size(74, 26);
+            this.правкаToolStripMenuItem.Size = new System.Drawing.Size(74, 24);
             this.правкаToolStripMenuItem.Text = "Правка";
             this.правкаToolStripMenuItem.Click += new System.EventHandler(this.правкаToolStripMenuItem_Click);
             // 
@@ -408,7 +411,7 @@ namespace NewCompiler
             this.списокЛитературыToolStripMenuItem,
             this.исходныйКодПрограммыToolStripMenuItem});
             this.текстToolStripMenuItem.Name = "текстToolStripMenuItem";
-            this.текстToolStripMenuItem.Size = new System.Drawing.Size(59, 26);
+            this.текстToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.текстToolStripMenuItem.Text = "Текст";
             this.текстToolStripMenuItem.Click += new System.EventHandler(this.текстToolStripMenuItem_Click);
             // 
@@ -468,11 +471,44 @@ namespace NewCompiler
             this.StatusStrip.TabIndex = 42;
             this.StatusStrip.Text = "statusStrip1";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(627, 37);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(42, 31);
+            this.button1.TabIndex = 43;
+            this.button1.Text = "1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(675, 37);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(42, 31);
+            this.button2.TabIndex = 44;
+            this.button2.Text = "2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(723, 37);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(42, 31);
+            this.button3.TabIndex = 45;
+            this.button3.Text = "3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Compiler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.OutputTabControl);
             this.Controls.Add(this.InputTabControl);
@@ -546,6 +582,9 @@ namespace NewCompiler
         private System.Windows.Forms.TabControl InputTabControl;
         private System.Windows.Forms.TabControl OutputTabControl;
         private System.Windows.Forms.StatusStrip StatusStrip;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }
 
