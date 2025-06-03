@@ -58,84 +58,85 @@ namespace NewCompiler
             if (InputTabControl.TabCount > 0 && GetCurrentRichTextBox() != null)
             {
                 string inputText = GetCurrentRichTextBox().Text;
+                // 1-4 лабы
+                /*
+                analyzer.Analyze(inputText, GetOutputDataGridView());
 
-                //analyzer.Analyze(inputText, GetOutputDataGridView());
+                TabPage existingParserTab = OutputTabControl.TabPages
+                    .Cast<TabPage>()
+                    .FirstOrDefault(tp => tp.Text == "Parser Output");
 
-                //TabPage existingParserTab = OutputTabControl.TabPages
-                //    .Cast<TabPage>()
-                //    .FirstOrDefault(tp => tp.Text == "Parser Output");
+                if (existingParserTab != null)
+                {
+                    OutputTabControl.TabPages.Remove(existingParserTab);
+                    existingParserTab.Dispose();
+                }
 
-                //if (existingParserTab != null)
-                //{
-                //    OutputTabControl.TabPages.Remove(existingParserTab);
-                //    existingParserTab.Dispose();
-                //}
+                TabPage parserTab = new TabPage("Parser Output");
+                DataGridView parserGridView = new DataGridView
+                {
+                    Dock = DockStyle.Fill
+                };
+                parserTab.Controls.Add(parserGridView);
+                OutputTabControl.TabPages.Add(parserTab);
 
-                //TabPage parserTab = new TabPage("Parser Output");
-                //DataGridView parserGridView = new DataGridView
-                //{
-                //    Dock = DockStyle.Fill
-                //};
-                //parserTab.Controls.Add(parserGridView);
-                //OutputTabControl.TabPages.Add(parserTab);
+                Parser parser = new Parser();
+                parser.Parse(inputText);
+                parser.ShowResults(parserGridView);
+                */
 
-                //Parser parser = new Parser();
-                //parser.Parse(inputText);
-                //parser.ShowResults(parserGridView);
+                // тетрады
+                /*
+                TabPage existingTetradaTab = OutputTabControl.TabPages
+    .Cast<TabPage>()
+    .FirstOrDefault(tp => tp.Text == "Тетрады");
 
-                // Проверяем и удаляем существующую вкладку "Тетрады", если она есть
+                if (existingTetradaTab != null)
+                {
+                    OutputTabControl.TabPages.Remove(existingTetradaTab);
+                    existingTetradaTab.Dispose();
+                }
 
+                // Создаем новую вкладку для вывода тетрад
+                TabPage tetradaTab = new TabPage("Тетрады");
+                SplitContainer splitContainer = new SplitContainer
+                {
+                    Dock = DockStyle.Fill,
+                    Orientation = Orientation.Vertical
+                };
 
+                DataGridView tetradaGridView = new DataGridView
+                {
+                    Dock = DockStyle.Fill,
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                };
 
-                //            TabPage existingTetradaTab = OutputTabControl.TabPages
-                //.Cast<TabPage>()
-                //.FirstOrDefault(tp => tp.Text == "Тетрады");
+                TextBox errorTextBox = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    Multiline = true,
+                    ScrollBars = ScrollBars.Vertical,
+                    ReadOnly = true,
+                    BackColor = SystemColors.Window,
+                    Visible = false
+                };
 
-                //            if (existingTetradaTab != null)
-                //            {
-                //                OutputTabControl.TabPages.Remove(existingTetradaTab);
-                //                existingTetradaTab.Dispose();
-                //            }
+                splitContainer.Panel1.Controls.Add(tetradaGridView);
+                splitContainer.Panel2.Controls.Add(errorTextBox);
+                tetradaTab.Controls.Add(splitContainer);
+                OutputTabControl.TabPages.Add(tetradaTab);
 
-                //            // Создаем новую вкладку для вывода тетрад
-                //            TabPage tetradaTab = new TabPage("Тетрады");
-                //            SplitContainer splitContainer = new SplitContainer
-                //            {
-                //                Dock = DockStyle.Fill,
-                //                Orientation = Orientation.Vertical
-                //            };
+                // Запускаем анализ и выводим результаты
+                Tetrada.AnalyzeExpression(
+                    inputText,
+                    GetCurrentRichTextBox(),
+                    tetradaGridView,
+                    errorTextBox
+                );
+                */
 
-                //            DataGridView tetradaGridView = new DataGridView
-                //            {
-                //                Dock = DockStyle.Fill,
-                //                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                //            };
-
-                //            TextBox errorTextBox = new TextBox
-                //            {
-                //                Dock = DockStyle.Fill,
-                //                Multiline = true,
-                //                ScrollBars = ScrollBars.Vertical,
-                //                ReadOnly = true,
-                //                BackColor = SystemColors.Window,
-                //                Visible = false
-                //            };
-
-                //            splitContainer.Panel1.Controls.Add(tetradaGridView);
-                //            splitContainer.Panel2.Controls.Add(errorTextBox);
-                //            tetradaTab.Controls.Add(splitContainer);
-                //            OutputTabControl.TabPages.Add(tetradaTab);
-
-                //            // Запускаем анализ и выводим результаты
-                //            Tetrada.AnalyzeExpression(
-                //                inputText,
-                //                GetCurrentRichTextBox(),
-                //                tetradaGridView,
-                //                errorTextBox
-                //            );
-
-                
-
+                // регулярные выражения
+                /*
                 // Создаем новую вкладку для вывода результатов регулярных выражений
                 TabPage existingRegularTab = OutputTabControl.TabPages
                     .Cast<TabPage>()
@@ -158,8 +159,95 @@ namespace NewCompiler
 
                 // Запускаем анализ регулярных выражений
                 Regular.Analyze(inputText, GetCurrentRichTextBox(), regularGridView);
+                */
 
+                // рекурсия
+                /*
+                TabPage existingRecursionTab = OutputTabControl.TabPages
+            .Cast<TabPage>()
+            .FirstOrDefault(tp => tp.Text == "Рекурсивный спуск");
 
+                if (existingRecursionTab != null)
+                {
+                    OutputTabControl.TabPages.Remove(existingRecursionTab);
+                    existingRecursionTab.Dispose();
+                }
+
+                TabPage recursionTab = new TabPage("Рекурсивный спуск");
+                SplitContainer splitContainer = new SplitContainer
+                {
+                    Dock = DockStyle.Fill,
+                    Orientation = Orientation.Vertical
+                };
+
+                DataGridView recursionGridView = new DataGridView
+                {
+                    Dock = DockStyle.Fill,
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                };
+
+                TextBox errorTextBox = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    Multiline = true,
+                    ScrollBars = ScrollBars.Vertical,
+                    ReadOnly = true,
+                    BackColor = SystemColors.Window,
+                    Visible = false
+                };
+
+                splitContainer.Panel1.Controls.Add(recursionGridView);
+                splitContainer.Panel2.Controls.Add(errorTextBox);
+                recursionTab.Controls.Add(splitContainer);
+                OutputTabControl.TabPages.Add(recursionTab);
+
+                // Run recursive descent parser
+                Recursion.Analyze(
+                    inputText,
+                    GetCurrentRichTextBox(),
+                    recursionGridView,
+                    errorTextBox
+                );*/
+                TabPage existingParserTab = OutputTabControl.TabPages
+            .Cast<TabPage>()
+            .FirstOrDefault(tp => tp.Text == "Unsigned Number Parser");
+
+                if (existingParserTab != null)
+                {
+                    OutputTabControl.TabPages.Remove(existingParserTab);
+                    existingParserTab.Dispose();
+                }
+
+                TabPage parserTab = new TabPage("Unsigned Number Parser");
+                SplitContainer splitContainer = new SplitContainer
+                {
+                    Dock = DockStyle.Fill,
+                    Orientation = Orientation.Vertical
+                };
+
+                DataGridView parserGridView = new DataGridView
+                {
+                    Dock = DockStyle.Fill,
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                };
+
+                TextBox errorTextBox = new TextBox
+                {
+                    Dock = DockStyle.Fill,
+                    Multiline = true,
+                    ScrollBars = ScrollBars.Vertical,
+                    ReadOnly = true,
+                    BackColor = SystemColors.Window
+                };
+
+                splitContainer.Panel1.Controls.Add(parserGridView);
+                splitContainer.Panel2.Controls.Add(errorTextBox);
+                parserTab.Controls.Add(splitContainer);
+                OutputTabControl.TabPages.Add(parserTab);
+
+                // Запускаем анализатор
+                UnsignedNumberParser parser = new UnsignedNumberParser();
+                parser.Analyze(inputText, parserGridView, errorTextBox);
             }
             else
             {
