@@ -193,7 +193,7 @@ namespace NewCompiler
 
                 if (!hasFractionDigits)
                 {
-                    throw new Exception("Decimal point must be followed by digits");
+                    throw new Exception("Expected unsigned_integer");
                 }
                 indentLevel--;
             }
