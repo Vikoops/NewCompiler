@@ -116,7 +116,7 @@ private static readonly Regex RgbColorRx = new Regex(@"(?:^|\s)rgb\(\s*(25[0-5]|
 RegexOptions.IgnoreCase);
 ```
 
-## Тестовые примерры
+## Тестовые примеры
 ![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_1.png)
 ![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_2.png)
 ![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример6_3.png)
@@ -129,8 +129,6 @@ RegexOptions.IgnoreCase);
 
 ## Вариант 24
 ```
-Для грамматики G[unsigned_number] разработать и реализовать
-алгоритм анализа на основе метода рекурсивного спуска.
 G[unsigned_number]:
 1. unsigned_number ::= decimal_number | exponential_part |
 decimal_number exponential_part
@@ -142,8 +140,6 @@ unsigned_integer
 5. decimal_fraction ::= '.' unsigned_integer
 6. exponential_part ::= '10' integer
 digit ::= 0 | 1 |…| 9
-Примечание: данные продукции были взяты из грамматики языка
-ALGOl 60.
 ```
 
 ## Язык, задаваемый грамматикой
@@ -195,4 +191,30 @@ ALGOl 60.
     └── <exponential_part>
 ```
 
+**Схема вызова функций в программе:**
+```
+UnsignedNumberParser::Analyze
+  └── ParseUnsignedNumber
+      ├── ParseDecimalNumber
+      │    ├── ParseUnsignedInteger
+      │    │    ├── IsDigit (проверка каждого символа)
+      │    │    └── Advance (перемещение позиции)
+      │    ├── ParseDecimalFraction (при наличии '.')
+      │    │    ├── CurrentChar (проверка текущего символа)
+      │    │    ├── Advance (пропуск '.')
+      │    │    └── ParseUnsignedInteger
+      │    └── (при отсутствии числа: возврат на начальную позицию)
+      └── ParseExponentialPart
+           ├── CurrentChar (проверка символов '10')
+           ├── Advance (пропуск '1' и '0')
+           ├── CurrentChar (проверка знака '+' или '-')
+           ├── Advance (пропуск знака)
+           └── ParseUnsignedInteger (проверка числа после знака)
+```
 
+## Тестовые примеры
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример8_1.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример8_2.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример8_3.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример8_4.png)
+![](https://github.com/Vikoops/NewCompiler/blob/master/image/ТестовыйПример8_5.png)
